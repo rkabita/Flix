@@ -17,10 +17,15 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
 
    var movies: [[String: Any]] = []
    var refreshControl: UIRefreshControl!
-
+   
+   
+ 
    override func viewDidLoad() {
       super.viewDidLoad()
 
+      
+      
+      
       refreshControl = UIRefreshControl()
       refreshControl.addTarget(self, action: #selector(NowPlayingViewController.didPullToRefresh(_:)), for: .valueChanged)
       tableView.insertSubview(refreshControl, at: 0)
@@ -33,6 +38,8 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
       fetchMovies()
 
    }
+   
+   
 
    func didPullToRefresh(_ refreshControl: UIRefreshControl) {
 
@@ -61,7 +68,6 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
          }
       }
       task.resume()
-
    }
 
    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -72,41 +78,30 @@ class NowPlayingViewController: UIViewController, UITableViewDataSource, UITable
       let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
 
 
-      let movie = movies[indexPath.row]
+     let movie = movies[indexPath.row]
       let title = movie["title"] as! String
-      let overview = movie["overview"] as! String
+     let overview = movie["overview"] as! String
       cell.titleLabel.text = title
       cell.overviewLabel.text = overview
 
-      let posterPathString = movie["poster_path"] as! String
+     let posterPathString = movie["poster_path"] as! String
       let baseURLString = "https://image.tmdb.org/t/p/w500"
 
       let posterURL = URL(string: baseURLString + posterPathString)!
-      cell.posterImageView.af_setImage(withURL: posterURL)
-      
-
-
-      return cell
+     cell.posterImageView.af_setImage(withURL: posterURL)
+         return cell
    }
 
-
-
-
    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      let cell = sender as! UITableViewCell
-      if let indexPath = tableView.indexPath(for: cell) {
-         let movie = movies[indexPath.row]
+        let cell = sender as! UITableViewCell
+         if let indexPath = tableView.indexPath(for: cell) {
+          let movie = movies[indexPath.row]
          let detailViewController = segue.destination as! DetailViewController
          detailViewController.movie = movie
       }
    }
-
-
-
-   override func didReceiveMemoryWarning() {
+ override func didReceiveMemoryWarning() {
       super.didReceiveMemoryWarning()
-      // Dispose of any resources that can be recreated.
-   }
-   
-   
+     
+   }  
 }
